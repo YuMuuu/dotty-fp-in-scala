@@ -1,7 +1,7 @@
 package ch02
 import scala.annotation.tailrec
 
-object FibonacciNumber
+object FibonaccNumber
 def fib(n: Int): Int =
   @tailrec def loop(n: (Int, Int), max: Int): Int =
     val (x, y) = n
