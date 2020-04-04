@@ -1,18 +1,16 @@
 package ch03
 
-import scala.annotation.tailrec
-
 sealed trait List[+A]
 case object Nil extends List[Nothing]
 case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
 object List:
-  @tailrec def sum (ints: List[Int]): Int =
+  def sum (ints: List[Int]): Int =
     ints match
       case Nil => 0
       case Cons(x, xs) => x + sum(xs)
 
-  @tailrec def product(ds: List[Double]): Double =
+  def product(ds: List[Double]): Double =
     ds match
       case Nil => 1.0
       case Cons(0d, _) => 0d
@@ -29,13 +27,13 @@ object List:
       case Cons(_, t) => t
 
   //exercise3.3
-  @tailrec def setHead[A](l: List[A], h: A) =
+  def setHead[A](l: List[A], h: A) =
     l match
       case Nil => ???
       case Cons(_, t) => Cons(h, t)
 
   //exercise3.4
-  @tailrec def drop[A](l: List[A], n: Int): List[A] =
+  def drop[A](l: List[A], n: Int): List[A] =
     if (n <= 0) l
     else
       l match
@@ -48,7 +46,7 @@ object List:
       case Cons(h, t) if f(h) => dropWhile(t, f)
       case _ => l
 
-  //dotty only
+
   val xs: List[Int] = List(1, 2, 3, 5)
   val ex1 = dropWhile(xs, x => x < 4)
 
@@ -57,5 +55,31 @@ object List:
       case Nil => z
       case Cons(x, xs) => f(x, foldRight(xs, z, f))
 
-  //dotty only
   val ex2 = foldRight(Cons(1, Cons(2, Cons(3, Nil))), 0, _ + _)
+
+  //exercise3.9
+  def length[A](as: List[A]): Int =
+    foldRight(as, 0, (_,cnt) => cnt + 1)
+
+  //exercise3.10
+  // def foldLeft[A, B](as: List[A], z: B, f: (B, A) => B): B =
+  //   as match
+  //     case Nil => z
+  //     case Cons(x, xs) => foldLeft(xs, f(z, x), f)
+
+  //extension methods
+  def [A, B](l: List[A]).foldLeft(z: B, f: (B, A) => B): B =
+    l match
+      case Nil => z
+      case Cons(x, xs) => xs.foldLeft(f(z, x), f)
+
+
+  //exercise3.11
+  def _sum(ints: List[Int]): Int =
+    ints.foldLeft(0, _ + _)
+
+  def _product(ds: List[Double]): Double =
+    ds.foldLeft(1, _ * _)
+
+  def _length[A](l: List[A]): Int =
+    l.foldLeft(0, (acc, _) => acc + 1)
