@@ -1,3 +1,12 @@
+# FP in Scala on Dotty
+dotty で fp in scala をやるリポジトリだよ！
+
+現状dotty独自の機能として
+- Extension Methods
+- Top level definitions
+- Improved type inference
+をつかってるよ
+
 ## sbt project compiled with Dotty
 
 ### Usage
