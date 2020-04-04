@@ -91,12 +91,22 @@ object List:
     l.foldLeft(0, (acc, _) => acc + 1)
 
   //exercise3.12
-  def reverse[A](l: List[A]): List[A] =
-    l.foldLeft(List[A](), (acc, c) => Cons(c, acc))
-    // List[A]() == List.empty
+  // def reverse[A](l: List[A]): List[A] =
+    // l.foldLeft(List[A](), (acc, c) => Cons(c, acc))
+  //extension methods
+  def [A](l: List[A]).reverse: List[A] =
+    l.foldLeft(Nil: List[A] , (acc, c) => Cons(c, acc))
 
   //exercise3.13
   def foldRightLeft[A,B](l: List[A], z: B, f: (A,B) => B): B =
     l.foldLeft((b: B) => b, (e, a) => b => e(f(a, b)))(z)
   def foldLeftRight[A,B](l: List[A], z: B)(f: (B,A) => B): B =
     l.foldRight((b: B) => b, (a, e) => b => e(f(b, a)))(z)
+
+  //exercise3.14
+  // def append[A](l: List[A], z: List[A]) = l.foldRight(z, Cons(_, _))
+  def [A](l: List[A]).append(z: List[A]) = l.foldRight(z, Cons(_, _))
+
+ //exercise3.15
+  // def flatten[A](ll: List[List[A]]): List[A] = ll.foldRight(Nil: List[A], (l, h) => l.append(h))
+  def [A](ll: List[List[A]]).flatten: List[A] = ll.foldRight(Nil: List[A], (l, h) => l.append(h))
