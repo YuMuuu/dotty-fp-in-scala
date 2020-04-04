@@ -110,3 +110,46 @@ object List:
  //exercise3.15
   // def flatten[A](ll: List[List[A]]): List[A] = ll.foldRight(Nil: List[A], (l, h) => l.append(h))
   def [A](ll: List[List[A]]).flatten: List[A] = ll.foldRight(Nil: List[A], (l, h) => l.append(h))
+
+  //exercise3.16
+  // def allIncrement(l: List[Int]): List[Int] = l.foldRight(Nil: List[Int], (h, t) => Cons(h + 1, t))
+  def (l: List[Int]).allIncrement: List[Int] = l.foldRight(Nil: List[Int], (h, t) => Cons(h + 1, t))
+
+  //exercise3.17
+  //3.16と同じなので省略
+
+  //exercise3.18
+  // def map[A, B](as: List[A], f: A => B): List[B] =
+  //   as.foldRight(Nil: List[B], (h, t) => Cons(f(h), t)as.foldRight(Nil: List[B], (h, t) => Cons(f(h), t)))
+  def [A, B](as: List[A]).map(f: A => B): List[B] =
+    as.foldRight(Nil: List[B], (h, t) => Cons(f(h), t))
+
+  //exercise3.19
+  // def filter[A](as: List[A], f: A => Boolean): List[A] =
+  //   as.foldRight(Nil:List[A], (h, t) => if (f(h)) Cons(h,t) else t)
+  def [A](as: List[A]).filter(f: A => Boolean): List[A] =
+    as.foldRight(Nil:List[A], (h, t) => if (f(h)) Cons(h,t) else t)
+
+  //exercise3.20
+  // def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as.map(f).flatten
+  def [A, B](as: List[A]).flatMap(f: A => List[B]): List[B] = as.map(f).flatten
+
+
+  //exercise3.21
+  def filter[A](as: List[A], f: A => Boolean): List[A] = as.flatMap(a => if (f(a)) List(a) else Nil)
+  // 拡張関数にするの秋田
+
+  //exercise3.22
+  def zipWithSum(a: List[Int], b: List[Int]): List[Int] =
+    (a, b) match
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(h1,t1), Cons(h2,t2)) => Cons(h1+h2,zipWithSum(t1,t2))
+
+  //exercise3.23
+  // 拡張関数だけ
+  def [A, B, C](la: List[A]).zipWith(lb: List[B], f:(A, B) => C): List[C] =
+    (la, lb) match
+      case (Nil, _) => Nil
+      case (_, Nil) => Nil
+      case (Cons(h1,t1), Cons(h2,t2)) => Cons(f(h1,h2), t1.zipWith(t2, f))
