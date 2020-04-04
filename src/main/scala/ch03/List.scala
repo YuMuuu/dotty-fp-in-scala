@@ -50,23 +50,29 @@ object List:
   val xs: List[Int] = List(1, 2, 3, 5)
   val ex1 = dropWhile(xs, x => x < 4)
 
-  def foldRight[A, B](as: List[A], z: B, f: (A, B) => B): B =
+  // def foldRight[A, B](as: List[A], z: B, f: (A, B) => B): B =
+  //   as match
+  //     case Nil => z
+  //     case Cons(x, xs) => f(x, foldRight(xs, z, f))
+  //extension methods
+  def [A, B](as: List[A]).foldRight(z: B, f: (A, B) => B): B =
     as match
       case Nil => z
-      case Cons(x, xs) => f(x, foldRight(xs, z, f))
+      case Cons(x, xs) => f(x, as.foldRight(z, f))
 
-  val ex2 = foldRight(Cons(1, Cons(2, Cons(3, Nil))), 0, _ + _)
+  val ex2 = Cons(1, Cons(2, Cons(3, Nil))).foldRight(0, _ + _)
+
 
   //exercise3.9
   def length[A](as: List[A]): Int =
-    foldRight(as, 0, (_,cnt) => cnt + 1)
+    as.foldRight(0, (_,cnt) => cnt + 1)
+
 
   //exercise3.10
   // def foldLeft[A, B](as: List[A], z: B, f: (B, A) => B): B =
   //   as match
   //     case Nil => z
   //     case Cons(x, xs) => foldLeft(xs, f(z, x), f)
-
   //extension methods
   def [A, B](l: List[A]).foldLeft(z: B, f: (B, A) => B): B =
     l match
@@ -83,3 +89,14 @@ object List:
 
   def _length[A](l: List[A]): Int =
     l.foldLeft(0, (acc, _) => acc + 1)
+
+  //exercise3.12
+  def reverse[A](l: List[A]): List[A] =
+    l.foldLeft(List[A](), (acc, c) => Cons(c, acc))
+    // List[A]() == List.empty
+
+  //exercise3.13
+  def foldRightLeft[A,B](l: List[A], z: B, f: (A,B) => B): B =
+    l.foldLeft((b: B) => b, (e, a) => b => e(f(a, b)))(z)
+  def foldLeftRight[A,B](l: List[A], z: B)(f: (B,A) => B): B =
+    l.foldRight((b: B) => b, (a, e) => b => e(f(b, a)))(z)
