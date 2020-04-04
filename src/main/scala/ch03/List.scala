@@ -1,4 +1,5 @@
 package ch03
+import scala.annotation.tailrec
 
 sealed trait List[+A]
 case object Nil extends List[Nothing]
@@ -98,6 +99,7 @@ object List:
     l.foldLeft(Nil: List[A] , (acc, c) => Cons(c, acc))
 
   //exercise3.13
+  // 答え見た
   def foldRightLeft[A,B](l: List[A], z: B, f: (A,B) => B): B =
     l.foldLeft((b: B) => b, (e, a) => b => e(f(a, b)))(z)
   def foldLeftRight[A,B](l: List[A], z: B)(f: (B,A) => B): B =
@@ -153,3 +155,18 @@ object List:
       case (Nil, _) => Nil
       case (_, Nil) => Nil
       case (Cons(h1,t1), Cons(h2,t2)) => Cons(f(h1,h2), t1.zipWith(t2, f))
+
+  //exercise3.24
+  //答え見た
+  @tailrec def [A](l: List[A]).startsWith(prefix: List[A]): Boolean =
+    (l, prefix) match
+      case (_, Nil) => true
+      case (Cons(h1, t1), Cons(h2, t2)) if h1 == h2 => t1.startsWith(t2)
+      case _ => false
+
+  @tailrec def [A](sup: List[A]).hasSubsequence(sub: List[A]): Boolean =
+    sup match {
+      case Nil => sub == Nil
+      case _ if sup.startsWith(sub) => true
+      case Cons(h, t) => sup.hasSubsequence(sub)
+    }
