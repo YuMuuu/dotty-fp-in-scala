@@ -164,8 +164,8 @@ object List:
       case _ => false
 
   @tailrec def [A](sup: List[A]).hasSubsequence(sub: List[A]): Boolean =
-    sup match {
+    sup match 
       case Nil => sub == Nil
       case _ if sup.startsWith(sub) => true
       case Cons(h, t) => sup.hasSubsequence(sub)
-    }
+    
