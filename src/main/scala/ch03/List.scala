@@ -138,8 +138,7 @@ object List:
 
 
   //exercise3.21
-  def filter[A](as: List[A], f: A => Boolean): List[A] = as.flatMap(a => if (f(a)) List(a) else Nil)
-  // 拡張関数にするの秋田
+  // def filter[A](as: List[A], f: A => Boolean): List[A] = as.flatMap(a => if (f(a)) List(a) else Nil)
 
   //exercise3.22
   def zipWithSum(a: List[Int], b: List[Int]): List[Int] =
