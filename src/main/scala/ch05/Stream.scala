@@ -96,6 +96,5 @@ object Stream:
       case None => empty  
 
   //exericise5.12
-  def from(n: Int): Stream[Int] = 
-    unfold[Int, Int](n, m => Some((_: Int, m: Int)))
+  def from(n: Int): Stream[Int] = unfold(n, _ => Some((n, n + 1)))
 
