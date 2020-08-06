@@ -17,8 +17,8 @@ object Player:
       case Player(name, _) => s"$name is the ウインナー"
     } getOrElse "It's a draw"
 
-
-trait IO[A]:
+import io.StdIn._
+trait IO[A]: 
   self =>
   def run(): A 
   def ++(io: IO[A]): IO[A]
@@ -31,11 +31,31 @@ trait IO[A]:
 object IO:
   def unit[A](a: => A): IO[A] = () => a
   def flatMap[A, B](fa: IO[A], f: A => IO[B]): IO[B] =
-    fa flatMap f
+    fa.flatMap(f)
   def apply[A](a: => A): IO[A] = unit(a)
   def empty(): IO[Unit] = () => ()
 
-  def ReadLine: IO[String] = () => readline
+  def ref[A](a: A): IO[IORef[A]] = () => new IORef(a) 
+  sealed class IORef[A](var value: A):
+    def set(a: A): IO[A] = () => { value = a; a }
+    def get: IO[A] = () => value 
+    def modify(f: A => A): IO[A] = get.flatMap (a => set(f(a)))
+  
+  def forever[A, B](a: IO[A]): IO[B] = 
+    lazy val t: IO[B] = forever(a)
+    a.flatMap(_ => t)
+
+  // def foldM[A, B](l: Stream[A], z:B, f:(B, A) => IO[B]): IO[B] = 
+  //   l match
+  //     case Stream.cons(h, t) => f(z, h).flatMap(z2 => foldM(t, z2, f))
+  //     case _ => unit(z)  
+
+  // def foreachM[A](l: Stream[A], z: B, f:(B, A) => IO[Unit]): IO[Unit] =
+  //   l match
+  //     case 
+
+
+  def ReadLine: IO[String] = () => readLine
   def PrintLine(msg: String):IO[Unit] = () => println(msg)
 
   def fahrenheiToCelsius(f: Double): Double =
@@ -45,7 +65,14 @@ object IO:
       _ <- PrintLine("Enter a てんぷれ in degress Fahrenheit: ")
       d <- ReadLine.map(_.toDouble)
       _ <- PrintLine(fahrenheiToCelsius(d).toString)
-    yield ()    
+    yield ()
+  
+  // def fanctorial(n: Int): IO[Int] = 
+  //   for  
+  //     acc <- ref(1)
+  //     _ <- foreachM (1 to n)(i => acc.modify(_ * i).skip)
+  //     result <- acc.get
+  //   yield result  
     
 
 

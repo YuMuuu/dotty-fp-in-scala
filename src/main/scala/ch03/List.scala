@@ -1,9 +1,9 @@
 package ch03
 import scala.annotation.tailrec
 
-sealed trait List[+A]
-case object Nil extends List[Nothing]
-case class Cons[+A](head: A, tail: List[A]) extends List[A]
+enum List[+A]:
+  case Nil extends List[Nothing] 
+  case Cons[+A](head: A, tail: List[A]) extends List[A] 
 
 object List:
   def sum (ints: List[Int]): Int =
