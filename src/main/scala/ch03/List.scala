@@ -2,7 +2,7 @@ package ch03
 import scala.annotation.tailrec
 
 enum List[+A]:
-  case Nil extends List[Nothing] 
+  case Nil 
   case Cons[+A](head: A, tail: List[A]) extends List[A] 
 
 object List:
@@ -108,6 +108,10 @@ object List:
   //exercise3.14
   // def append[A](l: List[A], z: List[A]) = l.foldRight(z, Cons(_, _))
   def [A](l: List[A]).append(z: List[A]) = l.foldRight(z, Cons(_, _))
+  def [A](l: List[A]).append2(z: List[A]): List[A] = 
+    l match 
+      case Nil => z
+      case Cons(h, t) => Cons(h, t.append2(z))
 
  //exercise3.15
   // def flatten[A](ll: List[List[A]]): List[A] = ll.foldRight(Nil: List[A], (l, h) => l.append(h))
@@ -126,15 +130,39 @@ object List:
   def [A, B](as: List[A]).map(f: A => B): List[B] =
     as.foldRight(Nil: List[B], (h, t) => Cons(f(h), t))
 
+  def [A, B](as: List[A]).map2(f: A => B): List[B] = 
+    as match 
+      case Nil        => Nil
+      case Cons(h, t) => Cons(f(h), t.map2(f))
+   
+
   //exercise3.19
   // def filter[A](as: List[A], f: A => Boolean): List[A] =
   //   as.foldRight(Nil:List[A], (h, t) => if (f(h)) Cons(h,t) else t)
   def [A](as: List[A]).filter(f: A => Boolean): List[A] =
-    as.foldRight(Nil:List[A], (h, t) => if (f(h)) Cons(h,t) else t)
+    as.foldRight(Nil:List[A], (h, t) => if f(h) then Cons(h,t) else t)
+  
+  def [A](as: List[A]).filter2(f: A => Boolean): List[A] = 
+    as match
+      case Nil => Nil
+      case Cons(h, t) if(!f(h)) => t 
+      case Cons(h, t) if(f(h)) => Cons(h, t.filter2(f))  
+  
+    
 
   //exercise3.20
   // def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = as.map(f).flatten
   def [A, B](as: List[A]).flatMap(f: A => List[B]): List[B] = as.map(f).flatten
+
+  def [A, B](as: List[A]).flatMap2(f: A => List[B]): List[B] = 
+    as.map(f).foldRight(Nil: List[B], (l, h) => l.foldRight(h, Cons(_, _)))
+
+  // def [A, B](as: List[A]).flatMap3(f: A => List[B]): List[B] = 
+  //   as.map(f) match
+  //     case Nil => Nil
+  //     case Cons(h, t): List[List[B]] => 
+  //       h.append2(t)
+         
 
 
   //exercise3.21

@@ -3,7 +3,7 @@ case class Player(name: String, score: Int)
 import IO._
 object Player:
   //コンテストのウインナーを出力する関数
-  def contest(p1: Player, p2: Player): IO[Unit] = 
+  def contest(p1: Player, p2: Player): IO[Unit] =  
     PrintLine(ウインナーMsg(ウインナー(p1, p2)))
 
   def ウインナー(p1: Player, p2: Player): Option[Player] = 
