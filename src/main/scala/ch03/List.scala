@@ -161,7 +161,11 @@ object List:
   //   as.map(f) match
   //     case Nil => Nil
   //     case Cons(h, t): List[List[B]] => 
-  //       h.append2(t)
+  //       // h.append2(t.flatten)
+  //       t match
+  //         case Nil => Nil
+  //         case Cons(Nil, css) => ???
+  //         case Cons((), css) => Cons()
          
 
 
