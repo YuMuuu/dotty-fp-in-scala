@@ -1,18 +1,4 @@
 # FP in Scala on Dotty
-dotty で fp in scala をやるリポジトリだよ！
+dotty で fp in scala を行う
 
-現状dotty独自の機能として
-- Extension Methods
-- Top level definitions
-- Improved type inference
-をつかってるよ
-
-## sbt project compiled with Dotty
-
-### Usage
-
-This is a normal sbt project, you can compile code with `sbt compile` and run it
-with `sbt run`, `sbt console` will start a Dotty REPL.
-
-For more information on the sbt-dotty plugin, see the
-[dotty-example-project](https://github.com/lampepfl/dotty-example-project/blob/master/README.md).
+後union typeとliteral typeが実装されているのでjs,tsの機能が使えないか試す
